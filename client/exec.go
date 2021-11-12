@@ -2,9 +2,8 @@ package client
 
 import (
 	"thomascrmbz.com/proxytunnel"
-	"thomascrmbz.com/proxytunnel/agent"
 )
 
-func (pc *ProxyClient) Execute(agentServer agent.Agent, args ...string) {
-	pc.execTunnelCmd(proxytunnel.Exec, agentServer, args...)
+func (pc *ProxyClient) Execute(agentID int, args ...string) {
+	pc.execTunnelCmd(proxytunnel.Exec, agentID, args...)
 }

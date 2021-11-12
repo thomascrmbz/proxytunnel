@@ -4,9 +4,8 @@ import (
 	"strconv"
 
 	"thomascrmbz.com/proxytunnel"
-	"thomascrmbz.com/proxytunnel/agent"
 )
 
-func (pc *ProxyClient) Proxy(agentServer agent.Agent, port int) {
-	pc.execTunnelCmd(proxytunnel.Proxy, agentServer, strconv.Itoa(port))
+func (pc *ProxyClient) Proxy(agentID int, port int) {
+	pc.execTunnelCmd(proxytunnel.Proxy, agentID, strconv.Itoa(port))
 }

@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"thomascrmbz.com/proxytunnel"
-	"thomascrmbz.com/proxytunnel/agent"
 )
 
 type ProxyClient struct {
@@ -25,9 +24,9 @@ func NewProxyClient(proxyServerIP string, proxyServerPort int) *ProxyClient {
 
 var baseCmd = strings.Fields("-tt -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=QUIET -o HostKeyAlgorithms=+ssh-rsa")
 
-func (pc *ProxyClient) execTunnelCmd(cmd proxytunnel.TunnelCmd, agentServer agent.Agent, args ...string) {
-	// baseCmd = append(append(pc.baseCmd, string(cmd), strconv.Itoa(agentServer.ID)), args...)
-	baseCmd = append(pc.baseCmd, args...) // for testing
+func (pc *ProxyClient) execTunnelCmd(cmd proxytunnel.TunnelCmd, agentID int, args ...string) {
+	baseCmd = append(append(pc.baseCmd, string(cmd), strconv.Itoa(agentID)), args...)
+	// baseCmd = append(pc.baseCmd, args...) // for testing
 
 	exeCmd := exec.Command("ssh", baseCmd...)
 	exeCmd.Stdout = os.Stdout
