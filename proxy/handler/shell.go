@@ -25,11 +25,17 @@ func ShellHandler(a *agent.Agent, s ssh.Session) {
 type sshOptions struct {
 	CopyStdin  bool
 	CopyStdout bool
+	Cmd        []string
+	OnRun      func()
+	OnExit     func()
+	OnDone     func()
 }
 
 func sshExe(a *agent.Agent, s ssh.Session, options sshOptions, args ...string) {
-	arg := []string{"-tt", "-oLogLevel=QUIET", a.IP, "-p", strconv.Itoa(a.Port)}
-	cmd := exec.Command("ssh", append(arg, args...)...)
+	if len(options.Cmd) == 0 {
+		options.Cmd = []string{"-tt", "-oLogLevel=QUIET", a.IP, "-p", strconv.Itoa(a.Port)}
+	}
+	cmd := exec.Command("ssh", append(options.Cmd, args...)...)
 	ptyReq, winCh, _ := s.Pty()
 	cmd.Env = append(cmd.Env, fmt.Sprintf("TERM=%s", ptyReq.Term))
 	f, err := pty.Start(cmd)
@@ -51,10 +57,21 @@ func sshExe(a *agent.Agent, s ssh.Session, options sshOptions, args ...string) {
 		io.Copy(s, f)
 	}
 
+	if options.OnRun != nil {
+		options.OnRun()
+	}
+
 	if err := cmd.Wait(); err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
+			if options.OnExit != nil {
+				options.OnExit()
+			}
 			s.Exit(exitError.ExitCode())
 		}
+	}
+
+	if options.OnDone != nil {
+		options.OnDone()
 	}
 
 }

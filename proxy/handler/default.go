@@ -21,6 +21,8 @@ func DefaultHandler(a *agent.Agent, s ssh.Session) {
 			ShellHandler(a, s)
 		case string(proxytunnel.Exec):
 			ExecHandler(a, s)
+		case string(proxytunnel.Proxy):
+			ProxyHandler(a, s)
 		default:
 			s.Exit(int(proxytunnel.COMMAND_NOT_FOUND))
 		}

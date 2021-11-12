@@ -8,5 +8,6 @@ func main() {
 	proxy := proxytunnel.NewProxyClient("pulu.trikthom.com", 8020)
 
 	// proxy.Execute(2, "date")
-	proxy.Shell(1)
+	// proxy.Shell(1)
+	proxy.Proxy(2, 3000)
 }

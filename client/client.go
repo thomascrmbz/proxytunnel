@@ -44,6 +44,8 @@ func (pc *ProxyClient) execTunnelCmd(cmd proxytunnel.TunnelCmd, agentID int, arg
 
 func (pc *ProxyClient) printErrorMessage(cmd proxytunnel.TunnelCmd, code int) {
 	switch code {
+	case int(proxytunnel.COMMAND_NOT_FOUND):
+		fmt.Println("Command not found")
 	case 255:
 		fmt.Println("Connection to proxy server refused")
 	}
