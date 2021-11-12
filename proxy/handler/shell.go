@@ -16,10 +16,10 @@ import (
 )
 
 func ShellHandler(a *agent.Agent, s ssh.Session) {
-	sshExe(s, sshOptions{
+	sshExe(a, s, sshOptions{
 		CopyStdin:  true,
 		CopyStdout: true,
-	}, "-tt", a.IP, "-p", strconv.Itoa(a.Port))
+	})
 }
 
 type sshOptions struct {
@@ -27,8 +27,9 @@ type sshOptions struct {
 	CopyStdout bool
 }
 
-func sshExe(s ssh.Session, options sshOptions, args ...string) {
-	cmd := exec.Command("ssh", args...)
+func sshExe(a *agent.Agent, s ssh.Session, options sshOptions, args ...string) {
+	arg := []string{"-tt", "-oLogLevel=QUIET", a.IP, "-p", strconv.Itoa(a.Port)}
+	cmd := exec.Command("ssh", append(arg, args...)...)
 	ptyReq, winCh, _ := s.Pty()
 	cmd.Env = append(cmd.Env, fmt.Sprintf("TERM=%s", ptyReq.Term))
 	f, err := pty.Start(cmd)
