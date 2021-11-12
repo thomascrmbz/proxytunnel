@@ -9,5 +9,5 @@ func main() {
 
 	// proxy.Execute(2, "date")
 	// proxy.Shell(1)
-	proxy.Proxy(2, 3000)
+	proxy.Proxy(2, "3000")
 }
