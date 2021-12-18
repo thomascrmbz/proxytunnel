@@ -8,6 +8,7 @@ import (
 	crypto_ssh "golang.org/x/crypto/ssh"
 	"thomascrmbz.com/proxytunnel"
 	"thomascrmbz.com/proxytunnel/agent"
+	"thomascrmbz.com/proxytunnel/proxy/auth"
 	"thomascrmbz.com/proxytunnel/proxy/handler"
 )
 
@@ -22,7 +23,11 @@ func (p *Proxy) ListenAndServe() error {
 	sshServer := ssh.Server{
 		Addr: "0.0.0.0:" + strconv.Itoa(p.Port),
 		Handler: func(s ssh.Session) {
-			handler.DefaultHandler(p.findAgent(s), s)
+			if auth.AuthHandler(p.AuthHandler, s) {
+				handler.DefaultHandler(p.findAgent(s), s)
+			} else {
+				s.Exit(int(proxytunnel.NOT_ALLOWED))
+			}
 		},
 		PublicKeyHandler: func(ctx ssh.Context, key ssh.PublicKey) bool {
 			ctx.SetValue("sshPublicKey", key.Marshal())
@@ -35,11 +40,9 @@ func (p *Proxy) ListenAndServe() error {
 	return sshServer.ListenAndServe()
 }
 
-func (p *Proxy) AddAgent(a agent.Agent, agents ...agent.Agent) {
-	p.agents = append(p.agents, &a)
-	for _, ag := range agents {
-		p.agents = append(p.agents, &ag)
-	}
+func (p *Proxy) AddAgent(a *agent.Agent, agents ...*agent.Agent) {
+	p.agents = append(p.agents, a)
+	p.agents = append(p.agents, agents...)
 }
 
 func (p *Proxy) findAgent(s ssh.Session) *agent.Agent {

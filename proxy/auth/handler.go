@@ -3,14 +3,10 @@ package auth
 import (
 	"github.com/gliderlabs/ssh"
 	crypto_ssh "golang.org/x/crypto/ssh"
-	"thomascrmbz.com/proxytunnel"
 )
 
-func AuthHandler(f func(crypto_ssh.PublicKey) bool, s ssh.Session) {
-	if !isAuth(f, (s.Context().Value("sshPublicKey")).([]byte)) {
-		s.Exit(int(proxytunnel.NOT_ALLOWED))
-		return
-	}
+func AuthHandler(f func(crypto_ssh.PublicKey) bool, s ssh.Session) bool {
+	return isAuth(f, (s.Context().Value("sshPublicKey")).([]byte))
 }
 
 func isAuth(f func(crypto_ssh.PublicKey) bool, byteKey []byte) bool {

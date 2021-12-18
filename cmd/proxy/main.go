@@ -20,19 +20,19 @@ func main() {
 	}
 
 	proxy.AddAgent(
-		agent.Agent{
+		&agent.Agent{
 			ID:   1,
 			Name: "production",
 			Port: 43023,
 			IP:   "devops@staging.pulu.devbitapp.be",
 		},
-		agent.Agent{
+		&agent.Agent{
 			ID:   2,
 			Name: "staging",
 			Port: 43022,
 			IP:   "devops@staging.pulu.devbitapp.be",
 		},
-		agent.Agent{
+		&agent.Agent{
 			ID:   3,
 			Name: "devboard",
 			Port: 43025,
