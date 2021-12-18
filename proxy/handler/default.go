@@ -13,8 +13,6 @@ func DefaultHandler(a *agent.Agent, s ssh.Session) {
 
 	if len(command) >= 2 {
 		fmt.Println(command)
-		// Check permissions from ssh public key
-		// sshPublicKey := s.Context().Value("sshPublicKey")
 
 		switch command[0] {
 		case string(proxytunnel.Shell):

@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gliderlabs/ssh"
+	crypto_ssh "golang.org/x/crypto/ssh"
 	"thomascrmbz.com/proxytunnel"
 	"thomascrmbz.com/proxytunnel/agent"
 	"thomascrmbz.com/proxytunnel/proxy/handler"
@@ -12,7 +13,7 @@ import (
 
 type Proxy struct {
 	Port        int
-	AuthHandler func() bool
+	AuthHandler func(crypto_ssh.PublicKey) bool
 
 	agents []*agent.Agent
 }
