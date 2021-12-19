@@ -46,7 +46,15 @@ func (pc *ProxyClient) printErrorMessage(cmd proxytunnel.TunnelCmd, code int) {
 	switch code {
 	case int(proxytunnel.COMMAND_NOT_FOUND):
 		fmt.Println("Command not found")
+	case int(proxytunnel.PTY_FAILED):
+		fmt.Println("PTY failed to initialize")
+	case int(proxytunnel.AGENT_NOT_FOUND):
+		fmt.Println("You are trying to connect to a unknown agent")
+	case int(proxytunnel.NOT_ALLOWED):
+		fmt.Println("You are not authorized for this action")
 	case 255:
 		fmt.Println("Connection to proxy server refused")
+	default:
+		fmt.Println("Unknown exit code:", code)
 	}
 }
