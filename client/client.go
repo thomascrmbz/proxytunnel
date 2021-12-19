@@ -54,7 +54,5 @@ func (pc *ProxyClient) printErrorMessage(cmd proxytunnel.TunnelCmd, code int) {
 		fmt.Println("You are not authorized for this action")
 	case 255:
 		fmt.Println("Connection to proxy server refused")
-	default:
-		fmt.Println("Unknown exit code:", code)
 	}
 }

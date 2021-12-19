@@ -25,6 +25,6 @@ func DefaultHandler(a *agent.Agent, s ssh.Session) {
 			s.Exit(int(proxytunnel.COMMAND_NOT_FOUND))
 		}
 	} else {
-		s.Exit(int(proxytunnel.NOT_ALLOWED))
+		s.Exit(int(proxytunnel.COMMAND_NOT_FOUND))
 	}
 }
