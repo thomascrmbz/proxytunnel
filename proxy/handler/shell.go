@@ -33,7 +33,7 @@ type sshOptions struct {
 
 func sshExe(a *agent.Agent, s ssh.Session, options sshOptions, args ...string) {
 	if len(options.Cmd) == 0 {
-		options.Cmd = []string{"-tt", "-oLogLevel=QUIET", a.IP, "-p", strconv.Itoa(a.Port)}
+		options.Cmd = []string{"-tt", "-oLogLevel=QUIET", a.SSH, "-p", strconv.Itoa(a.Port)}
 	}
 	cmd := exec.Command("ssh", append(options.Cmd, args...)...)
 	ptyReq, winCh, _ := s.Pty()

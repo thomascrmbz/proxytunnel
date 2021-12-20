@@ -5,4 +5,5 @@ type Agent struct {
 	Name string
 	Port int
 	IP   string
+	SSH  string
 }

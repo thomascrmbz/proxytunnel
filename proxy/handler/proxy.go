@@ -24,14 +24,14 @@ func init() {
 func ProxyHandler(a *agent.Agent, s ssh.Session) {
 	port := s.Command()[2]
 	proxyport := getFreePort()
-	conn := "staging.pulu.devbitapp.be -p 43022"
+	conn := a.IP + " -p " + strconv.Itoa(a.Port)
 	recordID := ""
 	sshExe(a, s, sshOptions{
 		CopyStdin:  true,
 		CopyStdout: false,
 		Cmd:        strings.Fields("-N -L pulu.trikthom.com:" + proxyport + ":localhost:" + port + " " + conn),
 		OnRun: func() {
-			s.Write([]byte("Proxied staging.pulu.devbitapp.be:" + port + " to pulu.trikthom.com:" + proxyport + "\n"))
+			s.Write([]byte("Proxied " + a.IP + ":" + port + " to pulu.trikthom.com:" + proxyport + "\n"))
 			go func() {
 				recordID = setupDNS(s, proxyport)
 			}()
